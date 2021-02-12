@@ -66,7 +66,7 @@ preferences {
         input "prefDatabasePort", "text", title: "Port", defaultValue: "8086", required: true
         input "prefDatabaseOrg", "text", title: "Org", defaultValue: "clea", required: true
         input "prefDatabaseBucket", "text", title: "Bucket", defaultValue: "graphana", required: true
-        input "prefDatabaseToken", "text", title: "Token", defaultValue: "", required: true
+        input "prefDatabaseToken", "text", title: "Token", defaultValue: "ePx9MP_2ZYRfCdUGQofja1DW-hSLWaLj71ljtNQP7zuiYToXFvivYrydu7T2T5fQhhmbvsi1rX6FJUCMOPxpJw==", required: true
     }
     
     section("Polling:") {
