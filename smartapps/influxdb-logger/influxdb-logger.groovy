@@ -177,8 +177,8 @@ def updated() {
     state.headers.put("HOST", "${state.databaseHost}:${state.databasePort}")
     state.headers.put("Content-Type", "application/x-www-form-urlencoded")
     state.headers.put("Authorization", "${state.databaseToken}")
-    state.headers.put("org=${state.databaseOrg}")
-    state.headers.put("bucket=${state.databaseBucket}")
+    state.headers.put("org","${state.databaseOrg}")
+    state.headers.put("bucket","${state.databaseBucket}")
 
     // Build array of device collections and the attributes we want to report on for that collection:
     //  Note, the collection names are stored as strings. Adding references to the actual collection 
