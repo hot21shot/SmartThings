@@ -62,11 +62,13 @@ preferences {
     }
 
     section ("InfluxDB Database:") {
-        input "prefDatabaseHost", "text", title: "Host", defaultValue: "10.10.10.10", required: true
+	    bucket = "<my-bucket>"
+
+	    input "prefDatabaseHost", "text", title: "Host", defaultValue: "192.168.1.15", required: true
         input "prefDatabasePort", "text", title: "Port", defaultValue: "8086", required: true
-        input "prefDatabaseName", "text", title: "Database Name", defaultValue: "", required: true
-        input "prefDatabaseUser", "text", title: "Username", required: false
-        input "prefDatabasePass", "text", title: "Password", required: false
+        input "prefDatabaseName", "text", title: "Org", defaultValue: "clea", required: true
+        input "prefDatabaseUser", "text", title: "Bucket", defaultValue: "graphana", required: true
+        input "prefDatabasePass", "text", title: "Token", defaultValue: "", required: true
     }
     
     section("Polling:") {
