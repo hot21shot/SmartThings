@@ -62,13 +62,11 @@ preferences {
     }
 
     section ("InfluxDB Database:") {
-	    bucket = "<my-bucket>"
-
-	    input "prefDatabaseHost", "text", title: "Host", defaultValue: "192.168.1.15", required: true
+        input "prefDatabaseHost", "text", title: "Host", defaultValue: "192.168.1.15", required: true
         input "prefDatabasePort", "text", title: "Port", defaultValue: "8086", required: true
-        input "prefDatabaseName", "text", title: "Org", defaultValue: "clea", required: true
-        input "prefDatabaseUser", "text", title: "Bucket", defaultValue: "graphana", required: true
-        input "prefDatabasePass", "text", title: "Token", defaultValue: "", required: true
+        input "prefDatabaseOrg", "text", title: "Org", defaultValue: "clea", required: true
+        input "prefDatabaseBucket", "text", title: "Bucket", defaultValue: "graphana", required: true
+        input "prefDatabaseToken", "text", title: "Token", defaultValue: "", required: true
     }
     
     section("Polling:") {
@@ -109,8 +107,8 @@ preferences {
         input "sleepSensors", "capability.sleepSensor", title: "Sleep Sensors", multiple: true, required: false
         input "smokeDetectors", "capability.smokeDetector", title: "Smoke Detectors", multiple: true, required: false
         input "soundSensors", "capability.soundSensor", title: "Sound Sensors", multiple: true, required: false
-		input "spls", "capability.soundPressureLevel", title: "Sound Pressure Level Sensors", multiple: true, required: false
-		input "switches", "capability.switch", title: "Switches", multiple: true, required: false
+        input "spls", "capability.soundPressureLevel", title: "Sound Pressure Level Sensors", multiple: true, required: false
+        input "switches", "capability.switch", title: "Switches", multiple: true, required: false
         input "switchLevels", "capability.switchLevel", title: "Switch Levels", multiple: true, required: false
         input "tamperAlerts", "capability.tamperAlert", title: "Tamper Alerts", multiple: true, required: false
         input "temperatures", "capability.temperatureMeasurement", title: "Temperature Sensors", multiple: true, required: false
@@ -170,17 +168,17 @@ def updated() {
     // Database config:
     state.databaseHost = settings.prefDatabaseHost
     state.databasePort = settings.prefDatabasePort
-    state.databaseName = settings.prefDatabaseName
-    state.databaseUser = settings.prefDatabaseUser
-    state.databasePass = settings.prefDatabasePass 
+    state.databaseOrg = settings.prefDatabaseOrg
+    state.databaseBucket = settings.prefDatabaseBucket
+    state.databaseToken = settings.prefDatabaseToken
     
-    state.path = "/write?db=${state.databaseName}"
+    state.path = "/api/v2/write"
     state.headers = [:] 
     state.headers.put("HOST", "${state.databaseHost}:${state.databasePort}")
     state.headers.put("Content-Type", "application/x-www-form-urlencoded")
-    if (state.databaseUser && state.databasePass) {
-        state.headers.put("Authorization", encodeCredentialsBasic(state.databaseUser, state.databasePass))
-    }
+    state.headers.put("Authorization", "${state.databaseToken}")
+    state.headers.put("org=${state.databaseOrg}")
+    state.headers.put("bucket=${state.databaseBucket}")
 
     // Build array of device collections and the attributes we want to report on for that collection:
     //  Note, the collection names are stored as strings. Adding references to the actual collection 
@@ -213,8 +211,8 @@ def updated() {
     state.deviceAttributes << [ devices: 'sleepSensors', attributes: ['sleeping']]
     state.deviceAttributes << [ devices: 'smokeDetectors', attributes: ['smoke']]
     state.deviceAttributes << [ devices: 'soundSensors', attributes: ['sound']]
-	state.deviceAttributes << [ devices: 'spls', attributes: ['soundPressureLevel']]
-	state.deviceAttributes << [ devices: 'switches', attributes: ['switch']]
+    state.deviceAttributes << [ devices: 'spls', attributes: ['soundPressureLevel']]
+    state.deviceAttributes << [ devices: 'switches', attributes: ['switch']]
     state.deviceAttributes << [ devices: 'switchLevels', attributes: ['level']]
     state.deviceAttributes << [ devices: 'tamperAlerts', attributes: ['tamper']]
     state.deviceAttributes << [ devices: 'temperatures', attributes: ['temperature']]
